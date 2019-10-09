@@ -1,0 +1,31 @@
+/*
+ * This macro subtracts the background, thresholds, and measures the area fraction
+ * 2019.10.09 created, Isabel
+ * 
+  */
+ 
+//Load data
+//run("cell Colony (31K)");
+//Subtract background
+run("Subtract Background...", "rolling=100 light sliding");
+//Threshold
+setAutoThreshold("Default dark")
+//run("Threshold...");
+//setThreshold(197, 255);
+setOption("BlackBackground", false);
+run("Convert to Mask")
+run("Options...");
+setAutoThreshold("Otsu");
+//setThreshold(255, 255);
+run("Convert to Mask");
+run("Options...", "iterations=1 count=1 black do=Nothing");
+setAutoThreshold("Otsu dark");
+//Measure
+run("Set Measurements...", "area_fraction redirect=None decimal=3");
+run("Set Measurements...", "area_fraction display redirect=None decimal=3");
+run("Analyze Particles...", "  show=Masks summarize")
+close();
+setAutoThreshold("Otsu");
+//setThreshold(255, 255);
+run("Convert to Mask");
+run("Analyze Particles...", "  show=Masks summarize");
